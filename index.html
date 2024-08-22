@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Speech Recognition</title>
+</head>
+
+<body>
+    <div class="top-container">
+        <h2 class="title">Speech-to-Speech LLM Bot</h2>
+    </div><br>
+    <button id="record-btn">Start Recording</button>
+    <div class="video-container">
+        <video id="webcam" autoplay playsinline></video>
+    </div>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <p id="recognized-text">Recognized Text: Waiting for input...</p>
+    <p id="response-text">Response: Waiting for input...</p>
+
+    <script>
+        const recordBtn = document.getElementById('record-btn');
+        const recognizedText = document.getElementById('recognized-text');
+        const responseText = document.getElementById('response-text');
+        const webcam = document.getElementById('webcam');
+        const canvas = document.getElementById('canvas');
+
+        let recognition;
+
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                recognizedText.innerText = `Recognized Text: ${transcript}`;
+
+                fetch('/api/recognize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: transcript })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            responseText.innerText = `Error: ${data.error}`;
+                        } else {
+                            responseText.innerText = `Response: ${data.response_text}`;
+                        }
+                    })
+                    .catch(error => {
+                        responseText.innerText = `Error: ${error.message}`;
+                    });
+            };
+
+            recognition.onerror = (event) => {
+                recognizedText.innerText = `Error: ${event.error}`;
+            };
+        } else {
+            recognizedText.innerText = "Web Speech API is not supported in this browser.";
+        }
+
+        recordBtn.addEventListener('click', () => {
+            if (recognition) {
+                recognition.start();
+                recognizedText.innerText = "Listening...";
+                responseText.innerText = "Waiting for response...";
+            }
+        });
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                webcam.srcObject = stream;
+            })
+            .catch(error => {
+                console.error("Error accessing webcam: ", error);
+            });
+
+        function captureImage() {
+            canvas.width = webcam.videoWidth;
+            canvas.height = webcam.videoHeight;
+            canvas.getContext('2d').drawImage(webcam, 0, 0, canvas.width, canvas.height);
+        }
+    </script>
+</body>
+
+</html>
