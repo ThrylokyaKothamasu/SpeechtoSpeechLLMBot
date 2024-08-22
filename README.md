@@ -1,1 +1,2 @@
-# SpeechtoSpeechLLMBot
+# Speech to Speech LLM Bot
+The Speech-to-Speech LLM Bot is a web-based application that enables users to interact with a Large Language Model (LLM) through spoken language. The process involves converting speech input to text, sending the text to an LLM for processing, generating a response, and converting that response back to speech. Below is a detailed explanation of each step, including potential challenges and solutions.
