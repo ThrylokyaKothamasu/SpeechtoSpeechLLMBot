@@ -1,0 +1,75 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Poetsen One', sans-serif;
+}
+
+
+.top-container {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px; 
+    background:linear-gradient(120deg,rgb(15, 54, 246),rgb(0, 170, 255),rgb(101, 163, 243));
+    height: 50px;
+}
+
+
+
+.title {
+    font-weight: 700;
+    font-style: normal;
+    color:white;
+    display: flex;
+    align-items: center;
+}
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+#webcam {
+    width: 320px;
+    height: 240px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+#record-btn{
+    display: block;
+    margin: 20px auto; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    background-color: #007bff; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    text-align: center; 
+}
+
+
+#recognized-text {
+    font-size: 18px;
+    color: #333;
+    margin: 10px 0;
+    padding: 10px 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#response-text {
+    font-size: 18px;
+    color: #007bff;
+    margin: 10px 0;
+    padding: 10px 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
